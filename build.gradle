@@ -1,0 +1,42 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+group = 'org.example'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    implementation 'com.squareup.okhttp3:okhttp:4.10.0'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.0'
+    implementation 'org.json:json:20210307'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+application {
+    mainClass = 'org.example.TranslatorGUI'
+}
+
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'org.example.TranslatorGUI'
+        )
+    }
+
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
+}
+
